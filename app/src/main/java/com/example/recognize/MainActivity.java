@@ -43,6 +43,7 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -150,14 +151,14 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                            String[] words = recognizedText.split(" ");
-                            Log.d("Words found are: ", String.valueOf(words));
+                            String[] words = recognizedText.split("[\\s\n]+");
+                            Log.d("Words found are: ", Arrays.toString(words));
                             ArrayList<String> links = new ArrayList<String>();
 
                             for(String word : words) {
                                 if(word.startsWith("http") || word.startsWith("www")) {
                                     links.add(word);
-                                    Log.d("Words found are: ",word);
+                                    Log.d("Word found is: ", word.toString());
                                 }
                             }
                             Log.d(" Array of words are: ", String.valueOf(links));
