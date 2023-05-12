@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-                            String[] words = recognizedText.split("[\\s\n]+");
+                            String[] words = recognizedText.split("[\\s\\n]+");
                             Log.d("Words found are: ", Arrays.toString(words));
                             ArrayList<String> links = new ArrayList<String>();
 
