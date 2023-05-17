@@ -44,6 +44,9 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -140,18 +143,18 @@ public class MainActivity extends AppCompatActivity {
             //start text recognition process from image
             Task<Text> textTaskResult = textRecognizer.process(inputImage)
                     .addOnSuccessListener(new OnSuccessListener<Text>() {
-                        @Override
-                        public void onSuccess(Text text) {
-                            //process completed, dismiss/close dialog
-                            progressDialog.dismiss();
-                            //get the recognized text
-                            String recognizedText = text.getText();
-                            Log.d(TAG,"onSuccess: recognizedText: "+recognizedText);
-                            //set the recognized text to edit text
+                  @Override
+                  public void onSuccess(Text text) {
+                      //process completed, dismiss/close dialog
+                      progressDialog.dismiss();
+                      //get the recognized text
+                      String recognizedText = text.getText();
+                      Log.d(TAG, "onSuccess: recognizedText: " + recognizedText);
+                      //set the recognized text to edit text
 
 
 
-                            String[] words = recognizedText.split("[\\s\\n]+");
+                           /* String[] words = recognizedText.split("\\s+|(?<=\\w)(?=[/\\.])");
                             Log.d("Words found are: ", Arrays.toString(words));
                             ArrayList<String> links = new ArrayList<String>();
 
@@ -161,13 +164,20 @@ public class MainActivity extends AppCompatActivity {
                                     Log.d("Word found is: ", word.toString());
                                 }
                             }
-                            Log.d(" Array of words are: ", String.valueOf(links));
-                            Intent intent = new Intent(MainActivity.this, LinksActivity.class);
-                            recognizedTextEt.setText(recognizedText);
-                            intent.putStringArrayListExtra("links", links);
-                            startActivity(intent);
+                            Log.d(" Array of words are: ", String.valueOf(links));*/
 
-                        }
+                      List<String> links = extractLinks(recognizedText);
+
+                      // Print the extracted links
+                      for (String link : links) {
+                          System.out.println(link);
+                      }
+                      Intent intent = new Intent(MainActivity.this, LinksActivity.class);
+
+                      recognizedTextEt.setText(recognizedText);
+                      intent.putStringArrayListExtra("links", (ArrayList<String>) links);
+                      startActivity(intent);
+                  }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
@@ -186,7 +196,24 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this,"Failed preparing image due to "+e.getMessage(),Toast.LENGTH_SHORT).show();
         }
     }
+    public static List<String> extractLinks(String text) {
+        List<String> links = new ArrayList<>();
 
+        // Regular expression pattern for finding links
+        String regex = "(?i)\\b((?:https?://|www\\d{0,3}[.]|[a-z0-9.\\-]+[.][a-z]{2,4}/)" +
+                "(?:[^\\s()<>]+|\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\))+" +
+                "(?:\\(([^\\s()<>]+|(\\([^\\s()<>]+\\)))*\\)|[^\\s`!()\\[\\]{};:'\".,<>?«»“”‘’]))";
+
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(text);
+
+        while (matcher.find()) {
+            String link = matcher.group();
+            links.add(link);
+        }
+
+        return links;
+    }
     private void showInputImageDialog(){
         //init PopupMenu param 1 is context, param 2 is UI view where you want to show PopupMenu
         PopupMenu popupMenu = new PopupMenu(this,inputImageBtn);
