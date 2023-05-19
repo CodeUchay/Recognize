@@ -41,7 +41,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="10dp"
+            tools:context=".MainActivity">
+            >
 
 
             <com.google.android.material.imageview.ShapeableImageView
@@ -66,14 +69,35 @@
                 android:layout_height="wrap_content"
                 android:textSize="12sp"/>
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/LinksBtn"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:text="Links"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/GoogleBtn"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:text="Google"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/ChatGPTBtn"
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:layout_marginStart="5dp"
+                android:text="Chat GPT"
+                android:layout_height="wrap_content"/>
 
 
         </LinearLayout>
         
         
     </ScrollView>
-
-
 
 
 </LinearLayout>

@@ -12,6 +12,8 @@ import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.app.SearchManager;
+import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -48,12 +50,54 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+//Chat GPT
+import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.TextView.OnEditorActionListener;
+import android.widget.EditText;
+
+import androidx.appcompat.app.AppCompatActivity;
+/*
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+*/
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+//Google
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.SearchManager;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
 public class MainActivity extends AppCompatActivity {
 
     private MaterialButton inputImageBtn;
     private MaterialButton recognizeTextBtn;
     private ShapeableImageView imageIv;
     private EditText recognizedTextEt;
+
+    private MaterialButton LinksBtn;
+    private MaterialButton GoogleBtn;
+    private MaterialButton ChatGPTBtn;
 
 
     //TAG
@@ -78,6 +122,8 @@ public class MainActivity extends AppCompatActivity {
     //TextRecognizer
     private TextRecognizer textRecognizer;
 
+    private String recognizedText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +134,9 @@ public class MainActivity extends AppCompatActivity {
         recognizeTextBtn = findViewById(R.id.recognizeTextBtn);
         imageIv = findViewById(R.id.imageIv);
         recognizedTextEt = findViewById(R.id.recognizedTextEt);
+        LinksBtn = findViewById(R.id.LinksBtn);
+        GoogleBtn = findViewById(R.id.GoogleBtn);
+        ChatGPTBtn = findViewById(R.id.ChatGPTBtn);
 
 
         //init arrays of permissions required for camera, gallery
@@ -104,6 +153,9 @@ public class MainActivity extends AppCompatActivity {
         textRecognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS);
 
         //handle click, show input image dialog
+        //initializing intent
+
+
         inputImageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -126,7 +178,64 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        LinksBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!recognizedText.equals("")){
+                    List<String> links = extractLinks(recognizedText);
+
+                    // Print the extracted links
+                    for (String link : links) {
+                        System.out.println(link);
+                    }
+                    Intent intent = new Intent(MainActivity.this, LinksActivity.class);
+                    intent.putStringArrayListExtra("links", (ArrayList<String>) links);
+                    startActivity(intent);
+                }
+               /* else {
+                    progressDialog.setMessage("Text Is Empty...");
+                }*/
+            }
+        });
+        GoogleBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Pradeebs code
+               String GoogleTxt = String.valueOf(recognizedTextEt.getText());
+                if(!GoogleTxt.equals("")) {
+                    try {
+                        Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+                        intent.putExtra(SearchManager.QUERY, GoogleTxt);
+                        startActivity(intent);
+                    } catch (ActivityNotFoundException e) {
+                        e.printStackTrace();
+                        try {
+                            Uri uri = Uri.parse("http://www.google.com/#q=" + GoogleTxt);
+                            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                            intent.putExtra(SearchManager.QUERY, GoogleTxt);
+                            startActivity(intent);
+                        } catch (ActivityNotFoundException ee) {
+                            e.printStackTrace();
+                            Toast.makeText(getApplicationContext(), "Error!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+            }
+        });
+        ChatGPTBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+               //Waseemmmmmmmmmm
+
+
+            }
+        });
     }
+
+
+
+
 
     private void recognizeTextFromImage(){
         Log.d("Bitchhhhhhhhh","recognizeTextFromImage: ");
@@ -148,35 +257,10 @@ public class MainActivity extends AppCompatActivity {
                       //process completed, dismiss/close dialog
                       progressDialog.dismiss();
                       //get the recognized text
-                      String recognizedText = text.getText();
+                       recognizedText = text.getText();
                       Log.d(TAG, "onSuccess: recognizedText: " + recognizedText);
-                      //set the recognized text to edit text
-
-
-
-                           /* String[] words = recognizedText.split("\\s+|(?<=\\w)(?=[/\\.])");
-                            Log.d("Words found are: ", Arrays.toString(words));
-                            ArrayList<String> links = new ArrayList<String>();
-
-                            for(String word : words) {
-                                if(word.startsWith("http") || word.startsWith("www")) {
-                                    links.add(word);
-                                    Log.d("Word found is: ", word.toString());
-                                }
-                            }
-                            Log.d(" Array of words are: ", String.valueOf(links));*/
-
-                      List<String> links = extractLinks(recognizedText);
-
-                      // Print the extracted links
-                      for (String link : links) {
-                          System.out.println(link);
-                      }
-                      Intent intent = new Intent(MainActivity.this, LinksActivity.class);
-
                       recognizedTextEt.setText(recognizedText);
-                      intent.putStringArrayListExtra("links", (ArrayList<String>) links);
-                      startActivity(intent);
+
                   }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -196,6 +280,10 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this,"Failed preparing image due to "+e.getMessage(),Toast.LENGTH_SHORT).show();
         }
     }
+
+
+
+
     public static List<String> extractLinks(String text) {
         List<String> links = new ArrayList<>();
 
@@ -214,6 +302,7 @@ public class MainActivity extends AppCompatActivity {
 
         return links;
     }
+
     private void showInputImageDialog(){
         //init PopupMenu param 1 is context, param 2 is UI view where you want to show PopupMenu
         PopupMenu popupMenu = new PopupMenu(this,inputImageBtn);
@@ -292,6 +381,7 @@ public class MainActivity extends AppCompatActivity {
             }
             }
             );
+    //
     private void pickImageCamera(){
         Log.d(TAG,"pickImageCamera: ");
         //prepare the image data to store it in MediaStore
