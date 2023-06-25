@@ -59,7 +59,7 @@
                 style="@style/TextAppearance.AppCompat.Headline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:text="Recognized Text:"/>
 
 
@@ -69,29 +69,77 @@
                 android:layout_height="wrap_content"
                 android:textSize="12sp"/>
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/LinksBtn"
+            <TableLayout
                 android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_marginStart="5dp"
-                android:text="Links"
-                android:layout_height="wrap_content"/>
+                android:layout_height="match_parent">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/GoogleBtn"
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_marginStart="5dp"
-                android:text="Google"
-                android:layout_height="wrap_content"/>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/ChatGPTBtn"
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_marginStart="5dp"
-                android:text="Chat GPT"
-                android:layout_height="wrap_content"/>
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/LinksBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="1"
+                        android:text="Links" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/GoogleBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="1"
+                        android:text="Ask Google" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/ChatGPTBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="1"
+                        android:text="Ask Chat GPT" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/PlayBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="1"
+                        android:text="Play Text" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/GetSummaryBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="1"
+                        android:text="Get Summary" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/SubjectBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_weight="1"
+                        android:text="Get Subject" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </TableLayout>
 
 
         </LinearLayout>

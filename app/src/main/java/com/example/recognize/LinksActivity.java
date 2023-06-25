@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import com.google.android.material.button.MaterialButton;
+
 import java.util.ArrayList;
 
 public class LinksActivity extends AppCompatActivity {
@@ -23,7 +25,8 @@ public class LinksActivity extends AppCompatActivity {
         LinearLayout buttonLayout = findViewById(R.id.button_layout);
 
         for (final String link : links) {
-            Button button = new Button(this);
+
+            MaterialButton button = new MaterialButton(this);
             button.setText(link);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override

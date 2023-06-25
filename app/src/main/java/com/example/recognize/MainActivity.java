@@ -202,6 +202,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 //Pradeebs code
+
+                // create new modifed text instead of get recognized text
+
                String GoogleTxt = String.valueOf(recognizedTextEt.getText());
                 if(!GoogleTxt.equals("")) {
                     try {
